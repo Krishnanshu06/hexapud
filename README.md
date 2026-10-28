@@ -238,28 +238,13 @@ Using **Thonny IDE** (or `mpremote`):
 
 ---
 
-## Future Scope: Autonomous AI Pilot
+## Future Scope
 
-```
- ┌───────────────────────────────────────────────────────────────┐
- │               TIER 2: THE "BRAIN" (High-Level AI)             │
- │  Raspberry Pi 5 / Jetson Orin Nano / Host PC / Cloud VLM      │
- │  • Vision & SLAM (Where am I?)                                │
- │  • Path Planning & Obstacle Avoidance (Where should I go?)    │
- │  • Multimodal Agent / LLM (Reasoning & Goal Execution)       │
- └───────────────────────────────┬───────────────────────────────┘
-                                 │ REST API over Wi-Fi (/api?w=...&dur=...)
- ┌───────────────────────────────▼───────────────────────────────┐
- │             TIER 1: THE "SPINAL CORD" (Current ESP32)         │
- │  • 50Hz Real-Time IK & Gait Generation                        │
- │  • Dynamic Balance & IMU Self-Leveling                        │
- │  • 18x Servo PWM Output & Safety Emergency Stop               │
- └───────────────────────────────────────────────────────────────┘
-```
+Right now, the robot relies on manual piloting over Wi-Fi, but the hardware and software are structured so we can expand towards full autonomy:
 
-1. **Reflexive Autonomy (IMU Integration)**: Adding an MPU6050 IMU to dynamically adjust individual leg heights, keeping the chassis level when walking up slopes or over uneven terrain.
-2. **Spatial Mapping (2D LiDAR)**: Adding an RPLiDAR/LD06 unit on a companion single-board computer (Raspberry Pi / Jetson) running ROS 2 SLAM for room mapping and autonomous path planning.
-3. **Multimodal AI Pilot**: Connecting a camera stream to a Vision-Language Model (VLM / LLM) with tool-calling capabilities that issues natural language navigation commands directly to the robot's existing REST API endpoints.
+1. **Self-Leveling with an IMU**: Adding an MPU6050 accelerometer/gyroscope to the chassis so the robot can dynamically adjust individual leg heights when walking over slopes or uneven surfaces.
+2. **LiDAR & Room Mapping**: Mounting a companion single-board computer (like a Raspberry Pi) with a 2D LiDAR to handle obstacle avoidance, room mapping, and autonomous navigation.
+3. **AI Vision & Navigation**: Streaming an onboard camera feed to an AI model that can understand surroundings and issue high-level navigation commands directly to our existing REST API endpoints.
 
 ---
 
