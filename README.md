@@ -59,25 +59,19 @@ Printing 18 leg segments using the original solid files would have been way too 
 
 ---
 
-## Hardware Architecture
+## Electronics & Power Setup
 
-```
-                             [ 7.4V 2S LiPo Battery ]
-                                        │
-                                   [ XT60 Plug ]
-                                        │
-                         ┌──────────────┴──────────────┐
-                         ▼                             ▼
-              [ LM2596 Buck (5V 3A) ]       [ XL4016E1 Buck (6V 8-15A) ]
-                         │                             │
-                         ▼                             ▼
-                     [ ESP32 ]                   [ PCA9685 #1 ] (0x40 - Left Legs 0,1,2)
-                         │ (I2C 400kHz)                │
-                         └─────────────────────────────┼─► [ PCA9685 #2 ] (0x41 - Right Legs 3,4,5)
-                                                       │
-                                                       ▼
-                                             [ 18x MG996R Servos ]
-```
+Driving 18 metal-gear servos draws heavy current spikes (often 6A to 10A during active walking), which would instantly brown out the ESP32 and cause random restarts if everything ran off the same regulator. To keep the board rock-solid, we split the power coming from our 2S 7.4V LiPo battery (connected via an XT60 plug) into two separate lines:
+
+- **Servo Bus (6V High-Current)**: An XL4016E1 buck converter steps down the battery voltage to a steady 6.0V to power all 18 servos through the two PCA9685 driver boards.
+- **Logic Bus (5V Clean)**: A smaller LM2596 buck converter drops the voltage down to 5.0V strictly for the ESP32 logic power.
+- **I2C Control**: The ESP32 talks to both PCA9685 boards over I2C (`GPIO 21` SDA, `GPIO 23` SCL). Board #1 (`0x40`) drives the 3 left legs, and Board #2 (`0x41`, with the A0 address pad bridged) drives the 3 right legs.
+
+### Circuit Schematic
+
+<p align="center">
+  <img src="docs/media/CircuitDiagram.svg" alt="Circuit Schematic" width="650" />
+</p>
 
 ### Bill of Materials (BOM) & Cost Breakdown
 
@@ -112,12 +106,6 @@ The total hardware build cost is approximately **₹8,400 – ₹8,800 INR (~$10
 | **Subtotal (Fasteners)** |                                    |            |    |                  | **₹313.40** |
 
 **Grand Total Hardware Build Cost**: **~₹8,827.65 INR (~$105.00 USD)**
-
-### Circuit Schematic
-
-<p align="center">
-  <img src="docs/media/CircuitDiagram.svg" alt="Circuit Schematic" width="650" />
-</p>
 
 ### Pinout & Wiring
 
