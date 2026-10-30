@@ -38,16 +38,18 @@ An open-source, 18-DOF biomimetic hexapod robot driven by an ESP32 microcontroll
 
 We got our initial 3D printable files from [Sir-Kuhnhero's Hexapod repository](https://github.com/Sir-Kuhnhero/Hexapod) on GitHub, which gave us a solid starting point. But as undergraduate students on a tight budget, we hit a practical problem right away: our local 3D printing service charged us per gram of plastic. 
 
-Printing 18 leg segments using the original solid files would have been way too expensive and unnecessarily heavy. So before sending anything to the printer, we brought the parts into CAD and modified them:
+Printing 18 leg segments using the original solid files would have driven up our 3D printing costs. So before sending anything to the printer, we brought the parts into CAD and modified them:
 
 - **Hollowing out the Tibia (Lower Leg)**:
-  The original design used a 2-piece tibia that had to be bolted together, and it was mostly solid plastic. We redesigned the tibia into a single printable piece and scooped out the non-critical plastic from the inside. This shaved off a significant amount of weight, cut our printing costs almost in half, and reduced the torque strain on our knee servos so they don't overheat while standing.
+  The original design used a 2-piece tibia that had to be bolted together, and it was mostly solid plastic. We redesigned the tibia into a single printable piece and scooped out the non-critical plastic from the inside. This helped bring down our printing costs and made the leg easier for our knee servos to lift and hold during stances.
   
 - **Modifying the Servo Mounts**:
   The MG996R servos we ordered turned out to have a slightly bulkier PCB housing on the back compared to the exact servos the original design used. To avoid forcing or cracking the plastic, we reduced the inner wall thickness of the servo brackets so our servos would slide right in with a snug fit.
 
 - **Why Leg 0 is White**:
   If you notice in the build photos, Leg 0 (Front-Left) is printed in white PLA with a 90° neutral tibia mount, while the other 5 legs are black PLA with a ~75° physical mount. Leg 0 was our very first test print to verify tolerances and servo horn alignment. Rather than wasting plastic reprinting it, we kept it on the robot and neutralized the physical angular difference in software via calibration offsets.
+
+All 3D print files (chassis `.3mf` files and leg `.stl` files) are organized in the [`cad/`](cad/) folder with a complete printing guide.
 
 ### Physical Assembly
 
@@ -61,7 +63,7 @@ Printing 18 leg segments using the original solid files would have been way too 
 
 ## Electronics & Power Setup
 
-Driving 18 metal-gear servos draws heavy current spikes (often 6A to 10A during active walking), which would instantly brown out the ESP32 and cause random restarts if everything ran off the same regulator. To keep the board rock-solid, we split the power coming from our 2S 7.4V LiPo battery (connected via an XT60 plug) into two separate lines:
+Driving 18 metal-gear servos draws heavy current spikes (often 6A to 10A during active walking), which would instantly brown out the ESP32 and cause random restarts if everything ran off the same regulator. To keep the board rock-solid, we split the power coming from our 3S 11.1V LiPo battery (connected via an XT60 plug) into two separate lines:
 
 - **Servo Bus (6V High-Current)**: An XL4016E1 buck converter steps down the battery voltage to a steady 6.0V to power all 18 servos through the two PCA9685 driver boards.
 - **Logic Bus (5V Clean)**: A smaller LM2596 buck converter drops the voltage down to 5.0V strictly for the ESP32 logic power.
@@ -75,14 +77,14 @@ Driving 18 metal-gear servos draws heavy current spikes (often 6A to 10A during 
 
 ### Bill of Materials (BOM) & Cost Breakdown
 
-The total hardware build cost is approximately **₹8,400 – ₹8,800 INR (~$100 – $105 USD)**, making it a highly accessible 18-DOF robotics platform.
+The total hardware build cost came out to approximately **₹8,828**, making it an accessible 18-DOF robotics platform.
 
 #### Electronics & Actuation
 
 | Item                             | Specification / Model                  | Qty | Unit Price (INR) |  Total Price (INR)  |
 | :------------------------------- | :------------------------------------- | :-: | :--------------: | :------------------: |
 | **Servos**                 | MG996R High-Torque Metal Gear Servos   | 18 |     ₹311.00     |      ₹5,597.00      |
-| **Battery**                | 7.4V 2S LiPo Battery Pack              |  1  |    ₹1,420.25    |      ₹1,420.25      |
+| **Battery**                | 11.1V 3S LiPo Battery Pack             |  1  |    ₹1,420.25    |      ₹1,420.25      |
 | **PWM Drivers**            | PCA9685 16-Channel 12-Bit I2C Drivers  |  2  |     ₹229.00     |       ₹458.00       |
 | **Microcontroller**        | ESP32-WROOM-32 Development Board       |  1  |     ₹350.00     |       ₹350.00       |
 | **High-Current Buck**      | XL4016E1 DC-DC Step-Down (6V Servos)   |  1  |     ₹450.00     |       ₹450.00       |
@@ -105,7 +107,7 @@ The total hardware build cost is approximately **₹8,400 – ₹8,800 INR (~$10
 | **Threaded Inserts**     | M5 Brass Heat-Set Inserts (OD 7mm) |    5 mm    | 42 |      ₹2.20      |      ₹92.40      |
 | **Subtotal (Fasteners)** |                                    |            |    |                  | **₹313.40** |
 
-**Grand Total Hardware Build Cost**: **~₹8,827.65 INR (~$105.00 USD)**
+**Grand Total Hardware Build Cost**: **₹8,827.65**
 
 ### Pinout & Wiring
 
@@ -174,6 +176,9 @@ $$
 
 ```
 HexaPud/
+├── cad/                            # 3D printable chassis (.3mf) and leg (.stl) models
+│   ├── body/                       # Main chassis plates and spacers
+│   └── legs/                       # Right, left (mirrored), and common leg parts
 ├── firmware/                       # Production ESP32 MicroPython firmware
 │   ├── main.py                     # Main controller & Wi-Fi web server
 │   ├── pca9685.py                  # I2C 16-channel 12-bit PWM driver
@@ -188,7 +193,7 @@ HexaPud/
 │   └── firmware_bin/               # ESP32 MicroPython binary images
 ├── docs/                           # Technical documentation & design assets
 │   ├── assets/                     # High-resolution diagrams, flowcharts, and GIFs
-│   ├── media/                      # Demonstration video and GIF
+│   ├── media/                      # Demonstration videos, photos, and walk GIF
 │   ├── calibration_offsets.md      # Hardware offset table & joint mapping
 │   └── presentation_deck.md        # Technical presentation slide deck
 ├── .gitignore
@@ -240,8 +245,8 @@ Right now, the robot relies on manual piloting over Wi-Fi, but the hardware and 
 
 This project was built by three roommates collaborating across mechanical, electrical, and software disciplines:
 
-- **Krishnanshu Agrawal**: Kinematics derivation, gait generation, locomotion engine, web application cockpit, calibration, and movement testing.
-- **Shreyansh Choudhary**: Electronics architecture, power distribution and regulation (dual UBECs, high-current routing), and battery management.
+- **[Krishnanshu Agrawal](https://github.com/Krishnanshu06)**: Kinematics derivation, gait generation, locomotion engine, web application cockpit, calibration, and movement testing.
+- **[Shreyansh Choudhary](https://github.com/shreyansh10100)**: Electronics architecture, power distribution and regulation (dual buck converters, high-current routing), CAD optimization, and battery management.
 - **Utkarsh Rathour**: Mechanical assembly, 3D printing and post-processing, hardware testing, and electrical integration.
 
 *Software architecture and inverse kinematics implementation were developed through AI-assisted pair programming.*
