@@ -2,8 +2,8 @@
 
 [![MicroPython](https://img.shields.io/badge/MicroPython-v1.25-blue.svg)](https://micropython.org/)
 [![Hardware](https://img.shields.io/badge/MCU-ESP32-red.svg)](https://www.espressif.com/)
-[![Actuation](<https://img.shields.io/badge/Servos-18x%20MG996R-green.svg>)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Team & Contributions](https://img.shields.io/badge/Team-Contributions-purple.svg)](#team--contributions)
 
 An open-source, 18-DOF biomimetic hexapod robot driven by an ESP32 microcontroller running MicroPython. Features analytical 3-DOF geometric inverse kinematics, 8-way omnidirectional vector walking, dual-mode morphing (6-legged hexapod $\leftrightarrow$ 4-legged quadruped mantis crawl), and a self-hosted Wi-Fi web cockpit.
 
