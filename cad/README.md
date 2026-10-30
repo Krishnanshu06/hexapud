@@ -27,7 +27,7 @@ A full hexapod requires **6 legs total**:
 
 | File | Quantity | Notes |
 | :--- | :---: | :--- |
-| `tibia_hollowed.stl` | 6 | Redesigned monocoque tibia. Shelled single-piece design with hollowed-out interior to minimize print material and lighten knee load |
+| `tibia_hollowed.stl` | 6 | Redesigned monocoque tibia. Shelled single-piece design with hollowed-out interior to minimize print material and lighten knee servo load |
 | `bushing.stl` | 12 | Low-friction hinge bushings for joint pivot pins |
 
 ### 2. Right Leg Parts (`cad/legs/right_leg/`)
@@ -36,7 +36,8 @@ A full hexapod requires **6 legs total**:
 | File | Quantity | Notes |
 | :--- | :---: | :--- |
 | `coxa.stl` | 3 | Horizontal yaw link attaching leg to chassis |
-| `femur.stl` | 3 | Upper leg thigh link |
+| `femurSlimPart.stl` | 3 | Slim half of the two-part femur thigh assembly |
+| `femurThicPart.stl` | 3 | Thick half of the two-part femur thigh assembly |
 | `servo_mount_trochanter.stl` | 3 | Shoulder pitch servo bracket (modified for MG996R rear PCB clearance) |
 | `servo_mount_tibia.stl` | 3 | Knee pitch servo bracket |
 
@@ -45,10 +46,9 @@ A full hexapod requires **6 legs total**:
 
 | File | Quantity | Notes |
 | :--- | :---: | :--- |
-| `femur_mirrored.stl` | 3 | Mirrored thigh link for left-side orientation |
-| `servo_mount_trochanter_mirrored.stl` | 3 | Mirrored shoulder pitch bracket |
-| `servo_mount_tibia_mirrored.stl` | 3 | Mirrored knee pitch bracket |
-| `leg_set_mirrored.stl` | — | Combined build-plate plate containing all mirrored parts |
+| `leg_set_mirrored(set of coxa, femurThic and slim).stl` | 3 | Combined plate containing all three mirrored leg segments: the mirrored coxa, femurThicPart, and femurSlimPart |
+| `servo_mount_trochanter_mirrored.stl` | 3 | Mirrored shoulder pitch servo bracket |
+| `servo_mount_on_tibia_mirrored.stl` | 3 | Mirrored knee pitch servo bracket |
 
 ---
 
